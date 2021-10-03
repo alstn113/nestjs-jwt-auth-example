@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReviewDto, FindReviewResponseDto, UpdateReviewDto } from './dto/review.dto';
-import { ReviewRepository } from './review.repository';
+import { CreateReviewDto, FindReviewResponseDto, UpdateReviewDto } from '@/review/dto/review.dto';
+import { ReviewRepository } from '@/review/review.repository';
 
 @Injectable()
 export class ReviewService {
-  constructor(private reviews: ReviewRepository) {}
+  constructor(private readonly reviews: ReviewRepository) {}
 
   findReviews(): Promise<FindReviewResponseDto[]> {
     try {

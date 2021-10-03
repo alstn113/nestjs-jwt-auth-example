@@ -1,41 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import {
-  CategoryResponseDto,
-  CreateCategoryDto,
-  FindCategoryResponseDto,
-} from './dto/category.dto';
-import { Category } from './entity/category.entity';
+import { CategoryRepository } from '@/category/category.repository';
+import { CreateCategoryDto, FindCategoryResponseDto } from '@/category/dto/category.dto';
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    @InjectRepository(Category)
-    private categoriesRepository: Repository<Category>,
-  ) {}
+  constructor(private readonly categories: CategoryRepository) {}
 
-  async findCategories(): Promise<FindCategoryResponseDto[]> {
-    return await this.categoriesRepository.find();
+  findCategories(): Promise<FindCategoryResponseDto[]> {
+    try {
+      return this.categories.findCategories();
+    } catch (err) {
+      throw new Error('404 findCategories Failed');
+    }
   }
 
   async findCategoryById(categoryId: number): Promise<FindCategoryResponseDto> {
     try {
-      const category = await this.categoriesRepository.findOneOrFail(categoryId);
-      return category;
+      return this.categories.findCategoryById(categoryId);
     } catch (err) {
-      throw err;
+      throw new Error('404 findCategoryById Failed');
     }
   }
 
-  async createReview(categoryBody: CreateCategoryDto): Promise<CategoryResponseDto> {
-    const newCategory = await this.categoriesRepository.create({ ...categoryBody });
-    return this.categoriesRepository.save(newCategory);
+  createCategory(categoryBody: CreateCategoryDto): string {
+    try {
+      this.categories.createCategory({ ...categoryBody });
+      return '200 createCategory Success';
+    } catch (err) {
+      throw new Error('404 createCategory Failed');
+    }
   }
 
-  async deleteReview(categoryId: number): Promise<CategoryResponseDto> {
-    const category = await this.findCategoryById(categoryId);
-    await this.categoriesRepository.delete(category);
-    return category;
+  deleteCategory(categoryId: number): string {
+    try {
+      this.categories.deleteCategory(categoryId);
+      return '200 deleteCategory Success';
+    } catch (err) {
+      throw new Error('404 deleteCategory Failed');
+    }
   }
 }

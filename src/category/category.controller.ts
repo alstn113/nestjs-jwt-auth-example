@@ -1,34 +1,28 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { CategoryService } from './category.service';
-import {
-  CategoryResponseDto,
-  CreateCategoryDto,
-  FindCategoryResponseDto,
-} from './dto/category.dto';
+import { CategoryService } from '@/category/category.service';
+import { CreateCategoryDto, FindCategoryResponseDto } from '@/category/dto/category.dto';
 
 @Controller('/categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  async findCategories(): Promise<FindCategoryResponseDto[]> {
-    return await this.categoryService.findCategories();
+  findCategories(): Promise<FindCategoryResponseDto[]> {
+    return this.categoryService.findCategories();
   }
 
-  @Get()
-  async findCategoryById(
-    @Param('categoryId') categoryId: number,
-  ): Promise<FindCategoryResponseDto> {
-    return await this.categoryService.findCategoryById(categoryId);
+  @Get('/:categoryId')
+  findCategoryById(@Param('categoryId') categoryId: number): Promise<FindCategoryResponseDto> {
+    return this.categoryService.findCategoryById(categoryId);
   }
 
   @Post()
-  async createCategory(@Body() body: CreateCategoryDto): Promise<CategoryResponseDto> {
-    return await this.categoryService.createReview(body);
+  createCategory(@Body() body: CreateCategoryDto): string {
+    return this.categoryService.createCategory(body);
   }
 
-  @Delete()
-  async deleteCategory(categoryId: number): Promise<CategoryResponseDto> {
-    return await this.categoryService.deleteReview(categoryId);
+  @Delete('/:categoryId')
+  deleteCategory(@Param('categoryId') categoryId: number): string {
+    return this.categoryService.deleteCategory(categoryId);
   }
 }
