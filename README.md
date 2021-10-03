@@ -36,3 +36,6 @@ pipe는 validation이라고 생각하기
 
 @/teacher/student.controller.ts에서 StudentService를 사용하기 때문에
 module에서 service export하고 module import 해서 받아옴
+
+database 관련
+npm install @nestjs/typeorm typeorm mysql2
