@@ -42,7 +42,7 @@ export class ReviewService {
 
   async deleteReview(reviewId: string): Promise<ReviewResponseDto> {
     const review = await this.findReviewById(reviewId);
-    await this.reviewsRepository.remove(review);
+    await this.reviewsRepository.delete(review);
     return review;
   }
 }

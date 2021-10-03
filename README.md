@@ -39,3 +39,5 @@ module에서 service export하고 module import 해서 받아옴
 
 database 관련
 npm install @nestjs/typeorm typeorm mysql2
+
+ormconfig.ts 만들고 데이터베이스 정보 module.exports 해줌

@@ -7,23 +7,23 @@ import {
   UpdateReviewDto,
 } from './dto/review.dto';
 
-@Controller('reviews')
+@Controller('/reviews')
 export class ReviewController {
-  constructor(private readonly reveiwService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) {}
 
   @Get()
   async findReviews(): Promise<FindReviewResponseDto[]> {
-    return await this.reveiwService.findReviews();
+    return await this.reviewService.findReviews();
   }
 
   @Get('/:reviewId')
   async findReviewById(@Param('reviewId') reviewId: string): Promise<FindReviewResponseDto> {
-    return await this.reveiwService.findReviewById(reviewId);
+    return await this.reviewService.findReviewById(reviewId);
   }
 
   @Post()
   async createReview(@Body() body: CreateReviewDto): Promise<ReviewResponseDto> {
-    return await this.reveiwService.createReview(body);
+    return await this.reviewService.createReview(body);
   }
 
   @Put('/:reviewId')
@@ -31,11 +31,11 @@ export class ReviewController {
     @Param('reviewId') reviewId: string,
     @Body() body: UpdateReviewDto,
   ): Promise<ReviewResponseDto> {
-    return await this.reveiwService.updateReview(body, reviewId);
+    return await this.reviewService.updateReview(body, reviewId);
   }
 
   @Delete('/:reviewId')
   async deleteReviewById(@Param('reviewId') reviewId: string): Promise<ReviewResponseDto> {
-    return await this.reveiwService.deleteReview(reviewId);
+    return await this.reviewService.deleteReview(reviewId);
   }
 }

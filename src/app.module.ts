@@ -1,22 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { ReviewModule } from '@/review/review.module';
-import { Review } from '@/review/entity/review.entity';
+import { CategoryModule } from '@/category/category.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'alstn6319438664',
-      database: 'nest-test',
-      entities: [Review],
-      synchronize: true,
-    }),
-
-    ReviewModule,
-  ],
+  imports: [TypeOrmModule.forRoot(), ReviewModule, CategoryModule],
 })
 export class AppModule {}
