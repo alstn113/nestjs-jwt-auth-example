@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Review } from '@/review/entity/review.entity';
 @Entity()
 export class Category {
@@ -8,6 +8,9 @@ export class Category {
   @Column()
   name: string;
 
-  @ManyToMany(() => Review, (review) => review.categories)
-  reviews: Review[];
+  @ManyToOne(() => Review, (review) => review.categories, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'review_id' })
+  review: Review;
 }
