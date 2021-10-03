@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from '@/Product/entity/product.entity';
-import { CreateProductDto, ProductResponseDto } from '@/Product/dto/product.dto';
-import { UpdateStudentDto } from '@/student/dto/student.dto';
+import { CreateProductDto, ProductResponseDto, UpdateProductDto } from '@/Product/dto/product.dto';
 
 @Injectable()
 export class ProductService {
@@ -29,7 +28,7 @@ export class ProductService {
   }
 
   async updateStudent(
-    productBody: UpdateStudentDto,
+    productBody: UpdateProductDto,
     productId: string,
   ): Promise<ProductResponseDto> {
     const product = await this.getProductById(productId);

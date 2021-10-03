@@ -4,8 +4,8 @@ import {
   FindProductResponseDto,
   ProductResponseDto,
   CreateProductDto,
+  UpdateProductDto,
 } from '@/product/dto/product.dto';
-import { UpdateStudentDto } from '@/student/dto/student.dto';
 
 @Controller('products')
 export class ProductController {
@@ -29,7 +29,7 @@ export class ProductController {
   @Put('/:productId')
   async updateProduct(
     @Param('productId') productId: string,
-    @Body() body: UpdateStudentDto,
+    @Body() body: UpdateProductDto,
   ): Promise<ProductResponseDto> {
     return await this.productService.updateStudent(body, productId);
   }

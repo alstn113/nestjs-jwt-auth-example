@@ -1,18 +1,22 @@
 import { Module } from '@nestjs/common';
-import { StudentModule } from '@/student/student.module';
-import { TeacherModule } from '@/teacher/teacher.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import config from '../ormconfig';
-import { Product } from '@/product/entity/product.entity';
-import { ProductModule } from '@/product/product.module';
+import { ReviewModule } from '@/review/review.module';
+import { Review } from '@/review/entity/review.entity';
 
 @Module({
   imports: [
-    StudentModule,
-    TeacherModule,
-    ProductModule,
-    TypeOrmModule.forRoot(config),
-    TypeOrmModule.forFeature([Product]),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'alstn6319438664',
+      database: 'nest-test',
+      entities: [Review],
+      synchronize: true,
+    }),
+
+    ReviewModule,
   ],
 })
 export class AppModule {}
