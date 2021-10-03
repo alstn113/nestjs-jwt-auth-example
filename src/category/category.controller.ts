@@ -17,7 +17,7 @@ export class CategoryController {
 
   @Get()
   async findCategoryById(
-    @Param('categoryId') categoryId: string,
+    @Param('categoryId') categoryId: number,
   ): Promise<FindCategoryResponseDto> {
     return await this.categoryService.findCategoryById(categoryId);
   }
@@ -28,7 +28,7 @@ export class CategoryController {
   }
 
   @Delete()
-  async deleteCategory(categoryId: string): Promise<CategoryResponseDto> {
+  async deleteCategory(categoryId: number): Promise<CategoryResponseDto> {
     return await this.categoryService.deleteReview(categoryId);
   }
 }

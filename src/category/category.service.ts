@@ -19,7 +19,7 @@ export class CategoryService {
     return await this.categoriesRepository.find();
   }
 
-  async findCategoryById(categoryId: string): Promise<FindCategoryResponseDto> {
+  async findCategoryById(categoryId: number): Promise<FindCategoryResponseDto> {
     try {
       const category = await this.categoriesRepository.findOneOrFail(categoryId);
       return category;
@@ -33,7 +33,7 @@ export class CategoryService {
     return this.categoriesRepository.save(newCategory);
   }
 
-  async deleteReview(categoryId: string): Promise<CategoryResponseDto> {
+  async deleteReview(categoryId: number): Promise<CategoryResponseDto> {
     const category = await this.findCategoryById(categoryId);
     await this.categoriesRepository.delete(category);
     return category;

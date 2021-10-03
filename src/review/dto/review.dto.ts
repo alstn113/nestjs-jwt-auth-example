@@ -1,11 +1,5 @@
 export class FindReviewResponseDto {
-  id: string;
-  title: string;
-  rating: number;
-}
-
-export class ReviewResponseDto {
-  id: string;
+  id: number;
   title: string;
   rating: number;
 }
@@ -16,6 +10,6 @@ export class CreateReviewDto {
 }
 
 export class UpdateReviewDto {
-  title: string;
-  rating: number;
+  title?: string;
+  rating?: number;
 }

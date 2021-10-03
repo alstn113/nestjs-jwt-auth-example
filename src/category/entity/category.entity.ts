@@ -3,7 +3,7 @@ import { Review } from '@/review/entity/review.entity';
 @Entity()
 export class Category {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   name: string;

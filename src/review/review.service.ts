@@ -1,48 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import {
-  CreateReviewDto,
-  FindReviewResponseDto,
-  ReviewResponseDto,
-  UpdateReviewDto,
-} from './dto/review.dto';
-import { Review } from '@/review/entity/review.entity';
+import { CreateReviewDto, FindReviewResponseDto, UpdateReviewDto } from './dto/review.dto';
+import { ReviewRepository } from './review.repository';
 
 @Injectable()
 export class ReviewService {
-  constructor(
-    @InjectRepository(Review)
-    private reviewsRepository: Repository<Review>,
-  ) {}
+  constructor(private reviews: ReviewRepository) {}
 
-  async findReviews(): Promise<FindReviewResponseDto[]> {
-    return await this.reviewsRepository.find();
-  }
-
-  async findReviewById(reviewId: string): Promise<FindReviewResponseDto> {
+  findReviews(): Promise<FindReviewResponseDto[]> {
     try {
-      const review = await this.reviewsRepository.findOneOrFail(reviewId);
-      return review;
+      return this.reviews.findReviews();
     } catch (err) {
-      throw err;
+      throw new Error('404 findReviews Failed');
     }
   }
 
-  async createReview(reviewBody: CreateReviewDto): Promise<ReviewResponseDto> {
-    const newReview = await this.reviewsRepository.create({ ...reviewBody });
-    return this.reviewsRepository.save(newReview);
+  findReviewById(reviewId: number): Promise<FindReviewResponseDto> {
+    try {
+      return this.reviews.findReviewById(reviewId);
+    } catch (err) {
+      throw new Error('404 findReviewById Failed');
+    }
   }
 
-  async updateReview(reviewBody: UpdateReviewDto, reviewId: string): Promise<ReviewResponseDto> {
-    const review = await this.findReviewById(reviewId);
-    review.title = reviewBody.title;
-    return this.reviewsRepository.save(review);
+  createReview(reviewBody: CreateReviewDto): string {
+    try {
+      this.reviews.createReview({ ...reviewBody });
+      return '200 createReview Success';
+    } catch (err) {
+      throw new Error('400 createReview Failed');
+    }
   }
 
-  async deleteReview(reviewId: string): Promise<ReviewResponseDto> {
-    const review = await this.findReviewById(reviewId);
-    await this.reviewsRepository.delete(review);
-    return review;
+  updateReview(reviewId: number, reviewBody: UpdateReviewDto): string {
+    try {
+      this.reviews.updateReview(reviewId, reviewBody);
+      return '200 updateReview Success';
+    } catch (err) {
+      throw new Error('400 updateReview Failed');
+    }
+  }
+
+  deleteReview(reviewId: number): string {
+    try {
+      this.reviews.deleteReview(reviewId);
+      return '200 deleteReview Success';
+    } catch (err) {
+      throw new Error('404 deleteReview Failed');
+    }
   }
 }

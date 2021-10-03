@@ -1,10 +1,10 @@
 export class FindCategoryResponseDto {
-  id: string;
+  id: number;
   name: string;
 }
 
 export class CategoryResponseDto {
-  id: string;
+  id: number;
   name: string;
 }
 
