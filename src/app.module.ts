@@ -15,7 +15,6 @@ import { CategoryModule } from "@/category/category.module";
       load: [config],
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       useClass: DatabaseConfig,
     }),
     ReviewModule,
