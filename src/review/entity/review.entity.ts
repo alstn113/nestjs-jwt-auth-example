@@ -1,5 +1,5 @@
-import { Category } from '@/category/entity/category.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from "@/category/entity/category.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Review {

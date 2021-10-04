@@ -1,5 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Review } from '@/review/entity/review.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Review } from "@/review/entity/review.entity";
 @Entity()
 export class Category {
   @PrimaryGeneratedColumn()
@@ -9,8 +15,8 @@ export class Category {
   name: string;
 
   @ManyToOne(() => Review, (review) => review.categories, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'review_id' })
+  @JoinColumn({ name: "review_id" })
   review: Review;
 }

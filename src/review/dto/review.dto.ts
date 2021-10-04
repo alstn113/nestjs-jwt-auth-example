@@ -1,3 +1,5 @@
+import { IsInt, IsNotEmpty, Max, Min } from "class-validator";
+
 export class FindReviewResponseDto {
   id: number;
   title: string;
@@ -5,7 +7,13 @@ export class FindReviewResponseDto {
 }
 
 export class CreateReviewDto {
+  @IsNotEmpty()
   title: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  @Max(10)
   rating: number;
 }
 

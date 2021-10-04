@@ -1,6 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { CreateCategoryDto } from '@/category/dto/category.dto';
-import { Category } from '@/category/entity/category.entity';
+import { EntityRepository, Repository } from "typeorm";
+import { CreateCategoryDto } from "@/category/dto/category.dto";
+import { Category } from "@/category/entity/category.entity";
 
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category> {

@@ -13,12 +13,16 @@ tsconfig.json에
 prettier 수정
 
       {
-        "singleQuote": true,
-        "semi": true,
-        "useTabs": false,
+        "printWidth": 80,
         "tabWidth": 2,
-        "trailingComma": "all",
-        "printWidth": 100
+        "useTabs": false,
+        "semi": true,
+        "singleQuote": false,
+        "quoteProps": "consistent",
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "arrowParens": "always",
+        "endOfLine": "lf"
       }
 
 eslint rules에 추가
@@ -50,3 +54,7 @@ database number인가 string인가 그래도 숫자니까 number로
 
 put은 자원의 전체 교체, 모든 필드 필요, 일부 전달 시 전달한 필드외 모두 null
 patch는 자원의 부분 교체
+
+pipe사용하기
+
+      npm i class-validator class-transformer
