@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { CategoryRepository } from "@/category/category.repository";
+import { CategoryRepository } from "@/category/repository/category.repository";
 import {
   CreateCategoryDto,
   FindCategoryResponseDto,

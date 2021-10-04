@@ -58,3 +58,18 @@ patch는 자원의 부분 교체
 pipe사용하기
 
       npm i class-validator class-transformer
+
+npm i @nestjs/config
+사용해서 config 관리하기
+
+    ConfigModule.forRoot({
+      isGlobal: true, // 다른 곳에서 ConfigModule 안 불러와도 사용 가능
+      envFilePath: process.env.NODE_ENV === "dev" ? ".env.dev" : ".env.test", // 사용할려는 .env 이름
+      ignoreEnvFile: process.env.NODE_ENV === "prod", // 사용하지않고 싶을 때, 배포 시 환경변수를 따로 입력하니까
+      load: [configuration], // load 하는 방법(배열)
+    }),
+
+private readonly config: ConfigService, // ConfigService 불러오기하고
+this.config.get('TOKEN_SECRET') 이런 식으로 불러옴
+
+출처 : https://darrengwon.tistory.com/965 , https://youtu.be/dZd9tZe5w3M

@@ -4,7 +4,7 @@ import {
   FindReviewResponseDto,
   UpdateReviewDto,
 } from "@/review/dto/review.dto";
-import { ReviewRepository } from "@/review/review.repository";
+import { ReviewRepository } from "@/review/repository/review.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()

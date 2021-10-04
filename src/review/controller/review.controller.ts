@@ -8,7 +8,7 @@ import {
   Post,
   ValidationPipe,
 } from "@nestjs/common";
-import { ReviewService } from "@/review/review.service";
+import { ReviewService } from "@/review/service/review.service";
 import {
   CreateReviewDto,
   FindReviewResponseDto,
