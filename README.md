@@ -73,3 +73,10 @@ private readonly config: ConfigService, // ConfigService 불러오기하고
 this.config.get('TOKEN_SECRET') 이런 식으로 불러옴
 
 출처 : https://darrengwon.tistory.com/965 , https://youtu.be/dZd9tZe5w3M
+
+인증관련
+
+      npm i @nestjs/jwt bcrypt cookie-parser
+      npm i -D @types/bcrypt @types/cookie-parser
+
+main.ts에 cookie-parser 설정

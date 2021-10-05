@@ -1,10 +1,13 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule } from "@nestjs/config";
 import { config } from "@/config/config";
-import { DatabaseConfig } from "@/config/database.config";
+import { DatabaseConfigService } from "@/config/database.config";
+import { JwtConfigService } from "./config/jwt.config";
 import { ReviewModule } from "@/review/review.module";
 import { CategoryModule } from "@/category/category.module";
+import { UserModule } from "@/user/user.module";
 
 @Module({
   imports: [
@@ -15,10 +18,14 @@ import { CategoryModule } from "@/category/category.module";
       load: [config],
     }),
     TypeOrmModule.forRootAsync({
-      useClass: DatabaseConfig,
+      useClass: DatabaseConfigService,
+    }),
+    JwtModule.registerAsync({
+      useClass: JwtConfigService,
     }),
     ReviewModule,
     CategoryModule,
+    UserModule,
   ],
 })
 export class AppModule {}
