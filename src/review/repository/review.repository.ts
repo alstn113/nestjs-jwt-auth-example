@@ -9,7 +9,7 @@ export class ReviewRepository extends Repository<Review> {
   findReviews(): Promise<Review[]> {
     return this.find();
   }
-  async findReviewById(reviewId: number): Promise<Review> {
+  async findReviewById(reviewId: number): Promise<Review | undefined> {
     const review = await this.findOne(reviewId);
     if (!review) {
       throw new HttpException(

@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { CategoryRepository } from "@/category/repository/category.repository";
 import {
-  CreateCategoryDto,
-  FindCategoryResponseDto,
+  CreateCategoryPostRequest,
+  FindCategoryGETResponse,
 } from "@/category/dto/category.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -13,7 +13,7 @@ export class CategoryService {
     private readonly categoryRepository: CategoryRepository
   ) {}
 
-  findCategories(): Promise<FindCategoryResponseDto[]> {
+  findCategories(): Promise<FindCategoryGETResponse[]> {
     try {
       return this.categoryRepository.findCategories();
     } catch (err) {
@@ -21,7 +21,7 @@ export class CategoryService {
     }
   }
 
-  async findCategoryById(categoryId: number): Promise<FindCategoryResponseDto> {
+  async findCategoryById(categoryId: number): Promise<FindCategoryGETResponse> {
     try {
       return this.categoryRepository.findCategoryById(categoryId);
     } catch (err) {
@@ -29,9 +29,14 @@ export class CategoryService {
     }
   }
 
-  createCategory(categoryBody: CreateCategoryDto): string {
+  async createCategory(
+    categoryBody: CreateCategoryPostRequest
+  ): Promise<string> {
     try {
-      this.categoryRepository.createCategory(categoryBody);
+      await this.categoryRepository.createCategory({
+        ...categoryBody,
+        review: { id: categoryBody.reviewId },
+      });
       return "200 createCategory Success";
     } catch (err) {
       throw new Error("404 createCategory Failed");

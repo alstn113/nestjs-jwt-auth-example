@@ -10,8 +10,8 @@ import {
 } from "@nestjs/common";
 import { CategoryService } from "@/category/service/category.service";
 import {
-  CreateCategoryDto,
-  FindCategoryResponseDto,
+  CreateCategoryPostRequest,
+  FindCategoryGETResponse,
 } from "@/category/dto/category.dto";
 
 @Controller("/categories")
@@ -19,20 +19,22 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  findCategories(): Promise<FindCategoryResponseDto[]> {
+  findCategories(): Promise<FindCategoryGETResponse[]> {
     return this.categoryService.findCategories();
   }
 
   @Get("/:categoryId")
   findCategoryById(
     @Param("categoryId") categoryId: number
-  ): Promise<FindCategoryResponseDto> {
+  ): Promise<FindCategoryGETResponse> {
     return this.categoryService.findCategoryById(categoryId);
   }
 
   @Post()
   @UsePipes(ValidationPipe)
-  createCategory(@Body() body: CreateCategoryDto): string {
+  async createCategory(
+    @Body() body: CreateCategoryPostRequest
+  ): Promise<string> {
     return this.categoryService.createCategory(body);
   }
 
