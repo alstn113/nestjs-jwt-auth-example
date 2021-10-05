@@ -1,28 +1,22 @@
 import { EntityRepository, Repository } from "typeorm";
-import { CreateReviewDto, UpdateReviewDto } from "@/review/dto/review.dto";
+import {
+  ReviewPatchRequest,
+  ReviewPostRequest,
+} from "@/review/dto/review-request.dto";
 import { Review } from "@/review/entity/review.entity";
-import { HttpException, HttpStatus } from "@nestjs/common";
-import { messages } from "@/config/messages.config";
 
 @EntityRepository(Review)
 export class ReviewRepository extends Repository<Review> {
   findReviews(): Promise<Review[]> {
     return this.find();
   }
-  async findReviewById(reviewId: number): Promise<Review | undefined> {
-    const review = await this.findOne(reviewId);
-    if (!review) {
-      throw new HttpException(
-        messages.FAILED.TO_FIND_REVIEW_BY_ID,
-        HttpStatus.NOT_FOUND
-      );
-    }
-    return review;
+  findReviewById(reviewId: number): Promise<Review | undefined> {
+    return this.findOne(reviewId);
   }
-  createReview(review: CreateReviewDto): void {
+  createReview(review: ReviewPostRequest): void {
     this.insert(review);
   }
-  updateReview(reviewId: number, { title, rating }: UpdateReviewDto): void {
+  updateReview(reviewId: number, { title, rating }: ReviewPatchRequest): void {
     this.update(
       { id: reviewId },
       { ...(title && { title }), ...(rating && { rating }) }

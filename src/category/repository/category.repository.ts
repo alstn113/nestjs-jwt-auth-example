@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import { CategoryPostRequest } from "@/category/dto/category.dto";
+import { CategoryPostRequest } from "@/category/dto/category-request.dto";
 import { Category } from "@/category/entity/category.entity";
 
 @EntityRepository(Category)

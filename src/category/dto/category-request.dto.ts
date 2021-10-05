@@ -1,10 +1,5 @@
 import { IsNotEmpty } from "class-validator";
 
-export class FindCategoryGETResponse {
-  id: number;
-  name: string;
-}
-
 export class CreateCategoryPostRequest {
   @IsNotEmpty()
   name: string;

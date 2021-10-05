@@ -9,25 +9,23 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { CategoryService } from "@/category/service/category.service";
-import {
-  CreateCategoryPostRequest,
-  FindCategoryGETResponse,
-} from "@/category/dto/category.dto";
+import { CreateCategoryPostRequest } from "@/category/dto/category-request.dto";
+import { CategoryResponse } from "../dto/category-response.dto";
 
 @Controller("/categories")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  findCategories(): Promise<FindCategoryGETResponse[]> {
-    return this.categoryService.findCategories();
+  async findCategories(): Promise<CategoryResponse[]> {
+    return await this.categoryService.findCategories();
   }
 
   @Get("/:categoryId")
-  findCategoryById(
+  async findCategoryById(
     @Param("categoryId") categoryId: number
-  ): Promise<FindCategoryGETResponse> {
-    return this.categoryService.findCategoryById(categoryId);
+  ): Promise<CategoryResponse> {
+    return await this.categoryService.findCategoryById(categoryId);
   }
 
   @Post()
@@ -35,11 +33,13 @@ export class CategoryController {
   async createCategory(
     @Body() body: CreateCategoryPostRequest
   ): Promise<string> {
-    return this.categoryService.createCategory(body);
+    return await this.categoryService.createCategory(body);
   }
 
   @Delete("/:categoryId")
-  deleteCategory(@Param("categoryId") categoryId: number): string {
-    return this.categoryService.deleteCategory(categoryId);
+  async deleteCategory(
+    @Param("categoryId") categoryId: number
+  ): Promise<string> {
+    return await this.categoryService.deleteCategory(categoryId);
   }
 }

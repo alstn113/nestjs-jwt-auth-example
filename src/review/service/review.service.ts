@@ -1,9 +1,9 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import {
-  CreateReviewDto,
-  FindReviewResponseDto,
-  UpdateReviewDto,
-} from "@/review/dto/review.dto";
+  CreateReviewPostRequest,
+  UpdateReviewPatchRequest,
+} from "@/review/dto/review-request.dto";
+import { ReviewResponse } from "@/review/dto/review-response.dto";
 import { ReviewRepository } from "@/review/repository/review.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { messages } from "@/config/messages.config";
@@ -15,59 +15,38 @@ export class ReviewService {
     private readonly reviewRepository: ReviewRepository
   ) {}
 
-  findReviews(): Promise<FindReviewResponseDto[]> {
-    try {
-      return this.reviewRepository.findReviews();
-    } catch (err) {
-      throw new HttpException(messages.FAILED.TO_FIND_REVIEWS, 400);
-    }
+  async findReviews(): Promise<ReviewResponse[]> {
+    return await this.reviewRepository.findReviews();
   }
 
-  findReviewById(reviewId: number): Promise<FindReviewResponseDto> {
-    try {
-      return this.reviewRepository.findReviewById(reviewId);
-    } catch (err) {
-      throw new HttpException(messages.FAILED.TO_FIND_REVIEW_BY_ID, 400);
+  async findReviewById(reviewId: number): Promise<ReviewResponse> {
+    const review = await this.reviewRepository.findReviewById(reviewId);
+    if (!review) {
+      throw new HttpException(
+        messages.FAILED.TO_FIND_REVIEW_BY_ID,
+        HttpStatus.NOT_FOUND
+      );
     }
+    return review;
   }
 
-  createReview(reviewBody: CreateReviewDto): string {
-    try {
-      this.reviewRepository.createReview(reviewBody);
-      return messages.SUCCESS.TO_CREATE_REVIEW;
-    } catch (err) {
-      throw new HttpException(messages.FAILED.TO_CREATE_REVIEW, 400);
-    }
+  async createReview(reviewBody: CreateReviewPostRequest): Promise<string> {
+    await this.reviewRepository.createReview(reviewBody);
+    return messages.SUCCESS.TO_CREATE_REVIEW;
   }
 
   async updateReview(
     reviewId: number,
-    reviewBody: UpdateReviewDto
+    reviewBody: UpdateReviewPatchRequest
   ): Promise<string> {
-    try {
-      await this.findReviewById(reviewId);
-      await this.reviewRepository.updateReview(reviewId, reviewBody);
-      return messages.SUCCESS.TO_UPDATE_REVIEW;
-    } catch (err) {
-      if (err.status === 404) {
-        throw err;
-      } else {
-        throw new HttpException(messages.FAILED.TO_UPDATE_REVIEW, 400);
-      }
-    }
+    await this.findReviewById(reviewId);
+    await this.reviewRepository.updateReview(reviewId, reviewBody);
+    return messages.SUCCESS.TO_UPDATE_REVIEW;
   }
 
   async deleteReview(reviewId: number): Promise<string> {
-    try {
-      await this.findReviewById(reviewId);
-      await this.reviewRepository.deleteReview(reviewId);
-      return messages.SUCCESS.TO_DELETE_REVIEW;
-    } catch (err) {
-      if (err.status === 404) {
-        throw err;
-      } else {
-        throw new HttpException(messages.FAILED.TO_DELETE_REVIEW, 400);
-      }
-    }
+    await this.findReviewById(reviewId);
+    await this.reviewRepository.deleteReview(reviewId);
+    return messages.SUCCESS.TO_DELETE_REVIEW;
   }
 }

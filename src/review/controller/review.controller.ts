@@ -10,36 +10,36 @@ import {
 } from "@nestjs/common";
 import { ReviewService } from "@/review/service/review.service";
 import {
-  CreateReviewDto,
-  FindReviewResponseDto,
-  UpdateReviewDto,
-} from "@/review/dto/review.dto";
+  CreateReviewPostRequest,
+  UpdateReviewPatchRequest,
+} from "@/review/dto/review-request.dto";
+import { ReviewResponse } from "@/review/dto/review-response.dto";
 
 @Controller("/reviews")
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Get()
-  findReviews(): Promise<FindReviewResponseDto[]> {
+  findReviews(): Promise<ReviewResponse[]> {
     return this.reviewService.findReviews();
   }
 
   @Get("/:reviewId")
-  findReviewById(
-    @Param("reviewId") reviewId: number
-  ): Promise<FindReviewResponseDto> {
+  findReviewById(@Param("reviewId") reviewId: number): Promise<ReviewResponse> {
     return this.reviewService.findReviewById(reviewId);
   }
 
   @Post()
-  createReview(@Body(ValidationPipe) body: CreateReviewDto): string {
-    return this.reviewService.createReview(body);
+  async createReview(
+    @Body(ValidationPipe) body: CreateReviewPostRequest
+  ): Promise<string> {
+    return await this.reviewService.createReview(body);
   }
 
   @Patch("/:reviewId")
   async updateReview(
     @Param("reviewId") reviewId: number,
-    @Body() body: UpdateReviewDto
+    @Body() body: UpdateReviewPatchRequest
   ): Promise<string> {
     return await this.reviewService.updateReview(reviewId, body);
   }
