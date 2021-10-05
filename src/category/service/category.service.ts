@@ -31,7 +31,7 @@ export class CategoryService {
 
   createCategory(categoryBody: CreateCategoryDto): string {
     try {
-      this.categoryRepository.createCategory({ ...categoryBody });
+      this.categoryRepository.createCategory(categoryBody);
       return "200 createCategory Success";
     } catch (err) {
       throw new Error("404 createCategory Failed");

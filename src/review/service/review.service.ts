@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import {
   CreateReviewDto,
   FindReviewResponseDto,
@@ -6,6 +6,7 @@ import {
 } from "@/review/dto/review.dto";
 import { ReviewRepository } from "@/review/repository/review.repository";
 import { InjectRepository } from "@nestjs/typeorm";
+import { messages } from "@/config/messages.config";
 
 @Injectable()
 export class ReviewService {
@@ -18,7 +19,7 @@ export class ReviewService {
     try {
       return this.reviewRepository.findReviews();
     } catch (err) {
-      throw new Error("404 findReviews Failed");
+      throw new HttpException(messages.FAILED.TO_FIND_REVIEWS, 400);
     }
   }
 
@@ -26,34 +27,47 @@ export class ReviewService {
     try {
       return this.reviewRepository.findReviewById(reviewId);
     } catch (err) {
-      throw new Error("404 findReviewById Failed");
+      throw new HttpException(messages.FAILED.TO_FIND_REVIEW_BY_ID, 400);
     }
   }
 
   createReview(reviewBody: CreateReviewDto): string {
     try {
-      this.reviewRepository.createReview({ ...reviewBody });
-      return "200 createReview Success";
+      this.reviewRepository.createReview(reviewBody);
+      return messages.SUCCESS.TO_CREATE_REVIEW;
     } catch (err) {
-      throw new Error("400 createReview Failed");
+      throw new HttpException(messages.FAILED.TO_CREATE_REVIEW, 400);
     }
   }
 
-  updateReview(reviewId: number, reviewBody: UpdateReviewDto): string {
+  async updateReview(
+    reviewId: number,
+    reviewBody: UpdateReviewDto
+  ): Promise<string> {
     try {
-      this.reviewRepository.updateReview(reviewId, reviewBody);
-      return "200 updateReview Success";
+      await this.findReviewById(reviewId);
+      await this.reviewRepository.updateReview(reviewId, reviewBody);
+      return messages.SUCCESS.TO_UPDATE_REVIEW;
     } catch (err) {
-      throw new Error("400 updateReview Failed");
+      if (err.status === 404) {
+        throw err;
+      } else {
+        throw new HttpException(messages.FAILED.TO_UPDATE_REVIEW, 400);
+      }
     }
   }
 
-  deleteReview(reviewId: number): string {
+  async deleteReview(reviewId: number): Promise<string> {
     try {
-      this.reviewRepository.deleteReview(reviewId);
-      return "200 deleteReview Success";
+      await this.findReviewById(reviewId);
+      await this.reviewRepository.deleteReview(reviewId);
+      return messages.SUCCESS.TO_DELETE_REVIEW;
     } catch (err) {
-      throw new Error("404 deleteReview Failed");
+      if (err.status === 404) {
+        throw err;
+      } else {
+        throw new HttpException(messages.FAILED.TO_DELETE_REVIEW, 400);
+      }
     }
   }
 }
