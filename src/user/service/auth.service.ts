@@ -1,9 +1,9 @@
-import { HttpException, Injectable, Res } from "@nestjs/common";
+import { HttpException, Injectable, Req, Res } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcrypt";
-import { Response } from "express";
+import { Response, Request } from "express";
 import { UserRepository } from "@/user/repository/user.repository";
 import { SignInRequest } from "@/user/dto/sign-in-request.dto";
 
@@ -36,8 +36,10 @@ export class AuthService {
     signOutResponse.clearCookie(this.configService.get("auth.tokenKey"));
     return "로그아웃 성공";
   }
+  verifyToken(@Req() request: Request) {
+    const token = request.cookies[this.configService.get("auth.tokenKey")];
+    if (!token) throw new Error("토큰 없음");
 
-  verifyToken() {
-    return;
+    return !!this.jwtService.verifyAsync(token);
   }
 }
