@@ -1,8 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserRepository } from "../repository/user.repository";
-import { CreateUserDto } from "@/user/dto/user.dto";
+import { UserRepository } from "@/user/repository/user.repository";
+import { SignInRequest } from "@/user/dto/sign-in-request.dto";
+import * as bcrypt from "bcrypt";
+
 @Injectable()
 export class UserService {
   constructor(
@@ -11,12 +13,9 @@ export class UserService {
     private readonly jwtService: JwtService
   ) {}
 
-  signUp(userbody: CreateUserDto): string {
-    try {
-      this.userRepository.createUser(userbody);
-      return "200 signUp Success";
-    } catch (err) {
-      throw new Error("400 signUp Failed");
-    }
+  async signUp(signInRequest: SignInRequest): Promise<string> {
+    signInRequest.password = bcrypt.hashSync(signInRequest.password, 10);
+    await this.userRepository.createUser(signInRequest);
+    return "200 signUp Success";
   }
 }

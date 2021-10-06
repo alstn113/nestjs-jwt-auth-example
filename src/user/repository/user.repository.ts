@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 import { User } from "@/user/entity/user.entity";
-import { CreateUserDto } from "@/user/dto/user.dto";
+import { CreateUserRequest } from "@/user/dto/create-user.dto";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -12,7 +12,7 @@ export class UserRepository extends Repository<User> {
     return this.findOne(userId);
   }
 
-  createUser(user: CreateUserDto): void {
+  createUser(user: CreateUserRequest): void {
     this.insert(user);
   }
 }
