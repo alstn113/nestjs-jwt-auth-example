@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Post, Res } from "@nestjs/common";
 import { SignInRequest } from "@/user/dto/sign-in-request.dto";
 import { AuthService } from "@/user/service/auth.service";
 import { Response } from "express";
@@ -13,5 +13,10 @@ export class AuthController {
     @Res({ passthrough: true }) signInResponse: Response
   ): Promise<string> {
     return this.authService.signIn(signInRequest, signInResponse);
+  }
+
+  @Delete()
+  signOut(@Res({ passthrough: true }) sigOutResponse: Response): string {
+    return this.authService.signOut(sigOutResponse);
   }
 }

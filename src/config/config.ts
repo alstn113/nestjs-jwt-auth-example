@@ -10,5 +10,6 @@ export const config = () => ({
   auth: {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
+    tokenKey: "access_token",
   },
 });

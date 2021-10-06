@@ -28,12 +28,13 @@ export class AuthService {
       throw new HttpException("비밀번호 불일치", 406);
     }
     const token = await this.jwtService.signAsync({ userId });
-    signInResponse.cookie(this.configService.get("auth.secret"), token);
+    signInResponse.cookie(this.configService.get("auth.tokenKey"), token);
     return "로그인 성공";
   }
 
-  signOut() {
-    return;
+  signOut(@Res({ passthrough: true }) signOutResponse: Response) {
+    signOutResponse.clearCookie(this.configService.get("auth.tokenKey"));
+    return "로그아웃 성공";
   }
 
   verifyToken() {
