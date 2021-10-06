@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule } from "@nestjs/config";
@@ -8,6 +8,7 @@ import { JwtConfigService } from "./config/jwt.config";
 import { ReviewModule } from "@/review/review.module";
 import { CategoryModule } from "@/category/category.module";
 import { UserModule } from "@/user/user.module";
+import { LoggerMiddleware } from "./jwt-middleware";
 
 @Module({
   imports: [
@@ -28,4 +29,14 @@ import { UserModule } from "@/user/user.module";
     UserModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude("/auth")
+      .exclude("/auth/*")
+      .exclude("/user")
+      .exclude("/user/*")
+      .forRoutes("*");
+  }
+}
